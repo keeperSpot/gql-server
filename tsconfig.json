@@ -1,0 +1,24 @@
+{
+   "compilerOptions": {
+      "baseUrl": "./src",
+      "lib": [
+         "es5",
+         "es6",
+         "esnext",
+         "dom"
+      ],
+      "target": "es5",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "outDir": "./build",
+      "removeComments": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "sourceMap": true,
+      "skipLibCheck": true,
+      "allowSyntheticDefaultImports": true
+   },
+   "exclude": [
+      "node_modules/globby/*.d.ts"
+   ]
+}
