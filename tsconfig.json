@@ -16,6 +16,6 @@
       "experimentalDecorators": true,
       "sourceMap": true,
       "skipLibCheck": true,
-      "allowSyntheticDefaultImports": true,
+      "allowSyntheticDefaultImports": true
    }
 }

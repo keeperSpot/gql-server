@@ -5,7 +5,7 @@ import { Application } from 'express';
 
 import { createConnection } from 'typeorm';
 import { GraphQLSchema } from 'graphql';
-import { generateSchema } from './loaders';
+import { generateSchema } from 'server/loaders';
 
 export class Server {
   db: Connection;

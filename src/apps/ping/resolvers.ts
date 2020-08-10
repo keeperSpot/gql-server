@@ -1,6 +1,8 @@
 const Resolvers = {
   Query: {
-    ping: (): string => 'pong',
+    ping: function (): string {
+      return 'pong';
+    },
   },
 };
 

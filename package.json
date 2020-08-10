@@ -3,12 +3,16 @@
    "version": "0.0.1",
    "private": true,
    "scripts": {
-      "build": "tsc && yarn copy-gql",
+      "compile": "tsc && yarn copy-gql",
       "copy-gql": "copy-and-watch src/**/*.{gql,graphql} build/src",
       "lint": "eslint '*/**/*.{js,ts,json}' --fix",
-      "prestart": "yarn build",
-      "start": "concurrently --names compile,server,cp-gql  \"tsc --watch\" \"nodemon -w build --exec yarn start:production\" \"yarn copy-gql --watch\" ",
-      "start:production": "node build/src/index.js"
+      "prestart": "yarn compile",
+      "start": "NODE_PATH=src node src/index.js",
+      "start:watch": "concurrently --names compile,server,cp-gql  \"tsc --watch\" \"nodemon -w build --exec yarn start:dev\" \"yarn copy-gql --watch\" ",
+      "start:dev": "NODE_ENV=development NODE_PATH=build/src node build/src/index.js",
+      "pretest": "yarn compile",
+      "tester": "jest",
+      "test": "NODE_ENV=test start-server-and-test \"yarn start:dev 4001\" 4001 \"yarn tester\""
    },
    "dependencies": {
       "dotenv": "^8.2.0",
@@ -20,7 +24,9 @@
       "typeorm": "^0.2.25"
    },
    "devDependencies": {
+      "@types/jest": "^26.0.9",
       "@types/node": "^8.0.29",
+      "@types/request-promise": "^4.1.46",
       "@typescript-eslint/eslint-plugin": "^3.8.0",
       "@typescript-eslint/parser": "^3.8.0",
       "concurrently": "^5.3.0",
@@ -28,10 +34,14 @@
       "eslint": "^7.6.0",
       "eslint-config-prettier": "^6.11.0",
       "eslint-plugin-prettier": "^3.1.4",
+      "jest": "^26.2.2",
       "nodemon": "^2.0.4",
       "prettier": "^2.0.5",
+      "request-promise": "^4.2.6",
+      "start-server-and-test": "^1.11.3",
+      "ts-jest": "^26.1.4",
       "ts-node": "3.3.0",
-      "typescript": "3.9.2",
+      "typescript": "^3.9.7",
       "typescript-eslint": "^0.0.1-alpha.0"
    }
 }
