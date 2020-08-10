@@ -1,8 +1,24 @@
 {
    "name": "server",
    "version": "0.0.1",
-   "description": "Awesome project developed with TypeORM.",
    "private": true,
+   "scripts": {
+      "build": "tsc && yarn copy-gql",
+      "copy-gql": "copy-and-watch src/**/*.{gql,graphql} build/src",
+      "lint": "eslint '*/**/*.{js,ts,json}' --fix",
+      "prestart": "yarn build",
+      "start": "concurrently --names compile,server,cp-gql  \"tsc --watch\" \"nodemon -w build --exec yarn start:production\" \"yarn copy-gql --watch\" ",
+      "start:production": "node build/src/index.js"
+   },
+   "dependencies": {
+      "dotenv": "^8.2.0",
+      "glob": "^7.1.6",
+      "graphql-yoga": "^1.18.3",
+      "merge-graphql-schemas": "^1.7.8",
+      "pg": "^8.3.0",
+      "reflect-metadata": "^0.1.10",
+      "typeorm": "^0.2.25"
+   },
    "devDependencies": {
       "@types/node": "^8.0.29",
       "@typescript-eslint/eslint-plugin": "^3.8.0",
@@ -15,22 +31,7 @@
       "nodemon": "^2.0.4",
       "prettier": "^2.0.5",
       "ts-node": "3.3.0",
-      "typescript": "3.3.3333",
+      "typescript": "3.9.2",
       "typescript-eslint": "^0.0.1-alpha.0"
-   },
-   "dependencies": {
-      "glob": "^7.1.6",
-      "graphql-yoga": "^1.18.3",
-      "merge-graphql-schemas": "1.7.7",
-      "pg": "^7.3.0",
-      "reflect-metadata": "^0.1.10",
-      "typeorm": "0.2.25"
-   },
-   "scripts": {
-      "prestart": "tsc",
-      "start": "concurrently \"nodemon node build/index.js\" \"tsc --watch\" \"yarn cp-gql --watch\" ",
-      "start:production": "node build/index.js",
-      "build": "tsc && yarn cp-gql",
-      "cp-gql": "copy-and-watch src/**/*.{gql,graphql} build"
    }
 }

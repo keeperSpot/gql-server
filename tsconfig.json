@@ -16,9 +16,6 @@
       "experimentalDecorators": true,
       "sourceMap": true,
       "skipLibCheck": true,
-      "allowSyntheticDefaultImports": true
-   },
-   "exclude": [
-      "node_modules/globby/*.d.ts"
-   ]
+      "allowSyntheticDefaultImports": true,
+   }
 }
