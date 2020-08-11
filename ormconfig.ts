@@ -17,7 +17,7 @@ const options = [
         dropSchema: isTest,
         synchronize: isTest,
         logging: process.env.NODE_ENV === 'development',
-        entities: ['src/**/entities/**/*.{t,j}s'],
+        entities: ['src/**/*.entity.{t,j}s'],
         migrations: ['src/**/migrations/**/*.{t,j}s'],
         subscribers: ['src/**/subscribers/**/*.{t,j}s'],
         cli: {

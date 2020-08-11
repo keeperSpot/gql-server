@@ -12,7 +12,7 @@ export class TestClient {
             jar: jar(),
             json: true,
             ...options,
-        }
+        };
     }
 
     async query(query: string, raiseError = true): Promise<any> {

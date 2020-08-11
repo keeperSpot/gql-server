@@ -10,14 +10,14 @@ const APP_FOLDER: string = joinPath(__dirname, '../apps');
 
 export const generateTypeDefs = (): string =>
   mergeTypes(
-    globSync(`${APP_FOLDER}/**/*.@(gql|graphql)`).map((path: string) =>
+    globSync(`${APP_FOLDER}/**/*.schema.@(gql|graphql)`).map((path: string) =>
       readFileSync(path, { encoding: 'utf8' })
     )
   );
 
 export const generateResolverSchema = (): any =>
   mergeResolvers(
-    globSync(`${APP_FOLDER}/**/resolvers.{t,j}s`).map(
+    globSync(`${APP_FOLDER}/**/*.resolvers.{t,j}s`).map(
       (path: string) => require(path).default
     )
   );

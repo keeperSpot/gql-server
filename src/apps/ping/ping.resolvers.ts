@@ -1,5 +1,5 @@
 import { ResolverMap } from 'types';
-import { Ping } from './entities/ping';
+import { Ping } from './ping.entity';
 
 const Resolvers: ResolverMap = {
   Query: {

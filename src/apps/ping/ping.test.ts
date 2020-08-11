@@ -2,7 +2,7 @@ import { Server } from 'server';
 import { Connection } from 'typeorm';
 
 import { TestClient } from 'server/client';
-import { Ping } from './entities/ping';
+import { Ping } from './ping.entity';
 
 let conn: Connection;
 beforeAll(async () => {
