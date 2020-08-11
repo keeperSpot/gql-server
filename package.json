@@ -7,12 +7,13 @@
       "copy-gql": "copy-and-watch src/**/*.{gql,graphql} build/src",
       "lint": "eslint '*/**/*.{js,ts,json}' --fix",
       "prestart": "yarn compile",
-      "start": "NODE_PATH=src node src/index.js",
-      "start:watch": "concurrently --names compile,server,cp-gql  \"tsc --watch\" \"nodemon -w build --exec yarn start:dev\" \"yarn copy-gql --watch\" ",
+      "start": "concurrently --names compile,server,cp-gql  \"tsc --watch\" \"nodemon -w build --exec yarn start:dev\" \"yarn copy-gql --watch\" ",
       "start:dev": "NODE_ENV=development NODE_PATH=build/src node build/src/index.js",
+      "start:prod": "NODE_ENV=production NODE_PATH=src node src/index.js",
+      "start:test": "NODE_ENV=test NODE_PATH=build/src node build/src/index.js",
       "pretest": "yarn compile",
-      "tester": "jest",
-      "test": "NODE_ENV=test start-server-and-test \"yarn start:dev 4001\" 4001 \"yarn tester\""
+      "test": "NODE_ENV=test start-server-and-test \"yarn start:test 4001\" 4001 \"yarn tester\"",
+      "tester": "jest"
    },
    "dependencies": {
       "dotenv": "^8.2.0",
