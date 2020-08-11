@@ -18,6 +18,7 @@
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/no-var-requires": "off",
-    "quotes": ["error", "single"]
+    "quotes": ["error", "single"],
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }

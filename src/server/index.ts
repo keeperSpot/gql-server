@@ -1,4 +1,4 @@
-import { HttpServer } from 'types';
+import { HttpServer, ResolverContext, ContextProvider } from 'types';
 import { Connection } from 'typeorm';
 import { GraphQLServer } from 'graphql-yoga';
 import { Application } from 'express';
@@ -21,16 +21,26 @@ export class Server {
   ) {}
 
   async config(): Promise<void> {
-    this.db = await this.connectToDB();
+    this.db = await Server.connectToDB();
     this.schema = generateSchema();
     this.server = new GraphQLServer({
       schema: this.schema,
+      context: this.getRequestContext
     });
     this.express = this.server.express;
+    this.express.set('trust proxy', true)
   }
 
-  connectToDB(): Promise<Connection> {
+  static connectToDB(): Promise<Connection> {
     return createConnection('default');
+  }
+
+  getRequestContext({ request }: ContextProvider): ResolverContext {
+    return {
+      request,
+      host: `${request.protocol}://${request.get('host')}`,
+      ip: request.ip
+    };
   }
 
   async start(): Promise<HttpServer> {

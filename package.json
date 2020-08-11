@@ -3,23 +3,25 @@
    "version": "0.0.1",
    "private": true,
    "scripts": {
-      "compile": "tsc && yarn copy-gql",
+      "compile": "tsc && tsc && yarn copy-gql",
       "copy-gql": "copy-and-watch src/**/*.{gql,graphql} build/src",
+      "db": "TS_NODE_TRANSPILE_ONLY=true ts-node ./node_modules/typeorm/cli.js --config ormconfig.ts",
       "lint": "eslint '*/**/*.{js,ts,json}' --fix",
-      "prestart": "yarn compile",
-      "start": "concurrently --names compile,server,cp-gql  \"tsc --watch\" \"nodemon -w build --exec yarn start:dev\" \"yarn copy-gql --watch\" ",
-      "start:dev": "NODE_ENV=development NODE_PATH=build/src node build/src/index.js",
-      "start:prod": "NODE_ENV=production NODE_PATH=src node src/index.js",
-      "start:test": "NODE_ENV=test NODE_PATH=build/src node build/src/index.js",
-      "pretest": "yarn compile",
-      "test": "NODE_ENV=test start-server-and-test \"yarn start:test 4001\" 4001 \"yarn tester\"",
-      "tester": "jest"
+      "makemigrations": "yarn db migration:generate",
+      "migrate": "yarn db migration:run",
+      "start": "per-env",
+      "start:development": "nodemon --exec ts-node src/index.ts",
+      "start:production": "node src/index.js",
+      "start:test": "ts-node src/index.ts",
+      "test": "NODE_ENV=test per-env",
+      "test:test": "start-server-and-test \"yarn start 4001\" 4001 \"jest\""
    },
    "dependencies": {
       "dotenv": "^8.2.0",
       "glob": "^7.1.6",
       "graphql-yoga": "^1.18.3",
       "merge-graphql-schemas": "^1.7.8",
+      "per-env": "^1.0.2",
       "pg": "^8.3.0",
       "reflect-metadata": "^0.1.10",
       "typeorm": "^0.2.25"
@@ -44,5 +46,19 @@
       "ts-node": "3.3.0",
       "typescript": "^3.9.7",
       "typescript-eslint": "^0.0.1-alpha.0"
+   },
+   "per-env": {
+      "production": {
+         "NODE_PATH": "src",
+         "TZ": "Asia/Kolkata"
+      },
+      "development": {
+         "NODE_PATH": "src",
+         "TZ": "Asia/Kolkata"
+      },
+      "test": {
+         "NODE_PATH": "src",
+         "TZ": "Asia/Kolkata"
+      }
    }
 }

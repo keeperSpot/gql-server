@@ -4619,6 +4619,11 @@ pause-stream@0.0.11:
   dependencies:
     through "~2.3"
 
+per-env@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/per-env/-/per-env-1.0.2.tgz#74e5f1a2c401b72cefe7fd872b3f3f6b79c04bb1"
+  integrity sha1-dOXxosQBtyzv5/2HKz8/a3nAS7E=
+
 performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"

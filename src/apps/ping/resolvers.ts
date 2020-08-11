@@ -1,6 +1,11 @@
-const Resolvers = {
+import { ResolverMap } from 'types';
+import { Ping } from './entities/ping';
+
+const Resolvers: ResolverMap = {
   Query: {
-    ping: function (): string {
+    ping: async (_, __, { ip }): Promise<string> => {
+      const ping = new Ping(ip);
+      await ping.save();
       return 'pong';
     },
   },
