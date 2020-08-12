@@ -43,6 +43,8 @@ export class Server {
             request,
             host: `${request.protocol}://${request.get('host')}`,
             ip: request.ip,
+            session: request.session,
+            user: request.session.user || null,
         };
     }
 
@@ -54,9 +56,6 @@ export class Server {
 
     addMiddleware(): void {
         middlewares.map((middleware) => this.server.express.use(middleware));
-        this.server.express.set('view engine', 'ejs');
-
-        // this.server.express.set('views', getTemplateDirs());
         hookViews(this.server.express);
     }
 

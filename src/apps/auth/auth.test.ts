@@ -58,7 +58,7 @@ describe('find users with email', () => {
     });
 
     test('insert multiple and find using wrong email', async () => {
-        const { user, emails } = await createUsersWithEmail(3);
+        await createUsersWithEmail(3);
         const { email: randomEmail } = await TestClient.createCredentials();
 
         const users = await User.findByEmails([randomEmail]);

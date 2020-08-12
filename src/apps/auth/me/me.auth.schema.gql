@@ -1,0 +1,21 @@
+type Phone {
+    country: String
+    number: String
+    verified: Boolean
+}
+
+type Email {
+    email: String
+    verified: Boolean
+}
+
+type User {
+    id: String
+    name: String
+    emails: [Email]
+    phones: [Phone]
+}
+
+type Query {
+    me: User
+}
