@@ -1,5 +1,14 @@
 import { jar, post } from 'request-promise';
 import { CookieJar, CoreOptions } from 'request';
+import { v4 as uuid } from 'uuid';
+import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
+
+
+interface RandomCredentials {
+    email: string;
+    password: string;
+    name: string;
+}
 
 export class TestClient {
     jar: CookieJar;
@@ -19,5 +28,17 @@ export class TestClient {
         const response = await post(this.url, { ...this.options, body: { query } });
         if (raiseError && response.error) throw new Error(`Query ${query} failed`);
         return response.data;
+    }
+
+    static createCredentials(): RandomCredentials {
+        return {
+            email: `${uuid()}@example.com`,
+            password: `Pass:${uuid()}`,
+            name: uniqueNamesGenerator({
+                dictionaries: [adjectives, colors, animals],
+                separator: ' ',
+                length: 2,
+            }),
+        };
     }
 }

@@ -1,14 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { BaseEntity } from 'helpers/db';
 
 
 @Entity('ping')
 export class Ping extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
-    @Column('timestamp', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })
-    time: Date;
-
     @Column({ nullable: false })
     ip: string;
 

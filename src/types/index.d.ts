@@ -1,6 +1,10 @@
 import { Server as OrgHttpServer } from 'http';
 import { Server as OrgHttpsServer } from 'https';
-import { Request } from 'express';
+import { Request as ExpressRequest } from 'express';
+
+export interface Request extends ExpressRequest {
+    session: Session;
+}
 
 export type HttpServer = OrgHttpServer | OrgHttpsServer;
 export interface ContextProvider {
