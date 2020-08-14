@@ -6,21 +6,33 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { mergeResolvers, mergeTypes } from 'merge-graphql-schemas';
 import { sync as globSync } from 'glob';
 import { GraphQLSchema } from 'graphql';
+import { isTest } from 'server/constants';
+
 
 const APP_FOLDER: string = joinPath(__dirname, '../apps');
+const paths = (ext: string): string[] => {
+    const all = globSync(`${APP_FOLDER}/**/?(*.)${ext}`);
+    const tests = globSync(`${APP_FOLDER}/**/?(*.)test.${ext}`);
+    return all.filter(x => {
+        if (!isTest) return tests.indexOf(x) < 0;
+        return true;
+    });
+};
 
 export const generateTypeDefs = (): string =>
     mergeTypes(
-        globSync(`${APP_FOLDER}/**/?(*.)schema.@(gql|graphql)`).map((path: string) =>
-            readFileSync(path, { encoding: 'utf8' }),
-        ),
+        paths('schema.@(gql|graphql)')
+            .map((path: string) =>
+                readFileSync(path, { encoding: 'utf8' }),
+            ),
     );
 
 export const generateResolverSchema = (): any =>
     mergeResolvers(
-        globSync(`${APP_FOLDER}/**/?(*.)resolvers.{t,j}s`).map(
-            (path: string) => require(path).default,
-        ),
+        paths('resolvers.{t,j}s')
+            .map(
+                (path: string) => require(path).default,
+            ),
     );
 
 export const generateSchema = (): GraphQLSchema =>
@@ -30,7 +42,7 @@ export const generateSchema = (): GraphQLSchema =>
     });
 
 export const hookViews = (express: Application): void => {
-    const patterns = globSync(`${APP_FOLDER}/**/?(*.)views.?s`)
+    const patterns = paths('views.?s')
         .map((views: string) => require(views).default);
 
     patterns.map((app) => {

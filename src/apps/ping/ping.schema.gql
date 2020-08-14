@@ -1,3 +1,4 @@
 type Query {
+    """Ping can be used to find is server alive or not"""
     ping: String!
 }

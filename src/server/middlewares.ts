@@ -6,6 +6,7 @@ import * as passport from 'passport';
 import * as ConnectRedis from 'connect-redis';
 import { createClient } from 'redis';
 import { config as dotEnvConfig } from 'dotenv';
+
 dotEnvConfig();
 
 import {
@@ -18,43 +19,47 @@ import {
     REDIS_URL,
 } from './constants';
 
-const Store = ConnectRedis(session);
-const client = createClient(REDIS_URL);
 
-const sessionMiddleware = session({
-    name: 'clientid',
-    store: new Store({ client, prefix: `${REDIS_SESSION_PREFIX}:` }),
-    secret: process.env.SECRET_KEY as string,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true,
-        secure: isProduction,
-        maxAge: MAX_SESSION_EXPIRY,
-    },
-});
+export const getMiddlewares = () => {
+    const Store = ConnectRedis(session);
+    const client = createClient(REDIS_URL);
 
-const rateLimit = new RateLimit({
-    store: new RateLimitRedisStore({
-        client,
-        prefix: REDIS_RATE_LIMIT,
-    }),
-    windowMs: 15 * 60 * 1000,
-    max: isTest ? 0 : 1000,
-    message: 'Too many request from this IP. Wait for some time to start again.',
-});
+    const sessionMiddleware = session({
+        name: 'clientid',
+        store: new Store({ client, prefix: `${REDIS_SESSION_PREFIX}:` }),
+        secret: process.env.SECRET_KEY as string,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: isProduction,
+            maxAge: MAX_SESSION_EXPIRY,
+        },
+    });
 
-const slowDown = new SlowDown({
-    windowMs: 1 * 60 * 1000,
-    delayAfter: 20,
-    delayMs: isTest ? 0 : 500,
-    store: new RateLimitRedisStore({
-        client,
-        prefix: REDIS_SLOW_DOWN,
-    }),
-});
+    const rateLimit = new RateLimit({
+        store: new RateLimitRedisStore({
+            client,
+            prefix: REDIS_RATE_LIMIT,
+        }),
+        windowMs: 15 * 60 * 1000,
+        max: isTest ? 0 : 1000,
+        message: 'Too many request from this IP. Wait for some time to start again.',
+    });
 
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
+    const slowDown = new SlowDown({
+        windowMs: 1 * 60 * 1000,
+        delayAfter: 20,
+        delayMs: isTest ? 0 : 500,
+        store: new RateLimitRedisStore({
+            client,
+            prefix: REDIS_SLOW_DOWN,
+        }),
+    });
 
-export const middlewares: Array<any> = [sessionMiddleware, passport.initialize(), slowDown, rateLimit];
+    passport.serializeUser((user, done) => done(null, user));
+    passport.deserializeUser((user, done) => done(null, user));
+
+    const middlewares: Array<any> = [sessionMiddleware, passport.initialize(), slowDown, rateLimit];
+    return middlewares;
+};

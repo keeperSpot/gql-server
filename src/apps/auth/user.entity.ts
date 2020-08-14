@@ -57,16 +57,12 @@ export class User extends BaseEntity {
             where: { email: In(emails) },
             relations: ['user'],
         });
-        console.log({ emails, emailObjs });
-        const uniqueUsers = _.uniqBy(emailObjs.map(emailObj => emailObj.user), 'id');
 
-        console.log({ emails, uniqueUsers });
-        return uniqueUsers;
+        return _.uniqBy(emailObjs.map(emailObj => emailObj.user), 'id');
     }
 
     static async findOneByEmails(emails: string[]): Promise<User | null> {
         const users = await User.findByEmails(emails);
-        console.log({ emails, users });
 
         if (users.length == 0) return null;
         if (users.length == 1) return users[0];
@@ -80,25 +76,19 @@ export class User extends BaseEntity {
             const emailObj = await Email.create({ email });
             await emailObj.save();
             emailObjs.push(emailObj);
-            console.log('Created email', email);
         }
-
-        console.log({ name, emails, emailObjs });
 
         const user = await User.create({ name, emails: emailObjs });
         await user.save();
-        console.log({ name, emails, emailObjs, user });
 
         return user;
     }
 
     static async getOrCreateUserByEmails({ name, emails }: CreateUserByEmailsOptions): Promise<[User, boolean]> {
         const existingUser = await User.findOneByEmails(emails);
-        console.log({ name, emails, existingUser });
         if (existingUser) return [existingUser, false];
 
         const newUser = await User.createUserByEmails({ name, emails });
-        console.log({ name, emails, newUser });
         return [newUser, true];
     }
 
@@ -116,5 +106,14 @@ export class User extends BaseEntity {
             where: { id: userId },
             relations: full ? ['emails', 'phones'] : [],
         });
+    }
+
+    async login(session: Session): Promise<User> {
+        session.userId = this.id;
+        return this;
+    }
+
+    static async logout(session: Session, logoutFromAll = false): Promise<void> {
+        delete session.userId;
     }
 }

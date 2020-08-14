@@ -6,7 +6,7 @@ import { Application } from 'express';
 import { createConnection } from 'typeorm';
 import { GraphQLSchema } from 'graphql';
 import { generateSchema, hookViews } from 'server/loaders';
-import { middlewares } from './middlewares';
+import { getMiddlewares } from './middlewares';
 
 
 export class Server {
@@ -30,6 +30,7 @@ export class Server {
             schema: this.schema,
             context: this.getRequestContext,
         });
+
         this.configureExpress();
         this.addMiddleware();
     }
@@ -55,6 +56,7 @@ export class Server {
     }
 
     addMiddleware(): void {
+        const middlewares = getMiddlewares();
         middlewares.map((middleware) => this.server.express.use(middleware));
         hookViews(this.server.express);
     }

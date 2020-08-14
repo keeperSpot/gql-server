@@ -14,7 +14,7 @@
       "start:production": "node src/index.js",
       "start:test": "ts-node src/index.ts",
       "test": "NODE_ENV=test per-env",
-      "test:test": "start-server-and-test \"yarn start 4001\" 4001 \"jest --forceExit -i\""
+      "test:test": "start-server-and-test \"yarn start 4001\" 4001 \"jest --detectOpenHandles --forceExit -i\""
    },
    "dependencies": {
       "connect-redis": "^5.0.0",
@@ -27,7 +27,9 @@
       "lodash": "^4.17.19",
       "merge-graphql-schemas": "^1.7.8",
       "passport": "^0.4.1",
+      "passport-github2": "^0.1.12",
       "passport-google-oauth20": "^2.0.0",
+      "passport-linkedin-oauth2": "^2.0.0",
       "per-env": "^1.0.2",
       "pg": "^8.3.0",
       "rate-limit-redis": "^2.0.0",

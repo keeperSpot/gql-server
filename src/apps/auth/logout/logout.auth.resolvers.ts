@@ -1,9 +1,10 @@
 import { ResolverMap } from 'types';
+import { User } from '../user.entity';
 
 const Resolvers: ResolverMap = {
     Query: {
         logout: async (_, __, { session }): Promise<boolean> => {
-            delete session.userId;
+            await User.logout(session);
             return true;
         },
     },

@@ -1,0 +1,3 @@
+type Mutation {
+    testRegister(email: String!, name: String!): User
+}
