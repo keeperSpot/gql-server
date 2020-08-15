@@ -1,3 +1,5 @@
 type Query {
+
+    """Logout user from current session"""
     logout: Boolean
 }

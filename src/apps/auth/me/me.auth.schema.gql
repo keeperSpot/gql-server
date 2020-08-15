@@ -1,21 +1,36 @@
+"""Phone is unique for all account"""
 type Phone {
+    """Country code of phone number, defaults to 91; Does not contain '+'."""
     country: String
+
+    """Real number of user excluding country code, for india 10 digit  number is required"""
     number: String
+
+    """Id the phone verified"""
     verified: Boolean
 }
 
+"""Email is unique for all account"""
 type Email {
     email: String
+
+    """Emails will be verified by the user"""
     verified: Boolean
 }
 
+"""These are basic details of any account"""
 type User {
     id: String
     name: String
+
+    """Multiple emails are associated with single account"""
     emails: [Email]
+
+    """Multiple phones are associated with single account"""
     phones: [Phone]
 }
 
 type Query {
+    """Returns details of user which is logged in"""
     me: User
 }

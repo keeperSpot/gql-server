@@ -1,0 +1,5 @@
+type Mutation {
+
+    """Login/Create account with google"""
+    loginWithGoogle(id: String!, token: String!): User
+}

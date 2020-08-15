@@ -21,8 +21,8 @@ export class OAuth {
         [this.name, this.strategy] = [name, strategy];
 
         const {
-            loginURL = `/auth/${name}/`,
-            callbackURL = `/auth/${name}/callback/`,
+            loginURL = `/oauth/${name}/`,
+            callbackURL = `/oauth/${name}/callback/`,
             getProfile = OAuth.defaultGetProfile,
             authenticateOptions = {},
             callbackOptions = {},
