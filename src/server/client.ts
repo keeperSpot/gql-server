@@ -3,7 +3,6 @@ import { CookieJar, CoreOptions } from 'request';
 import { v4 as uuid } from 'uuid';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import { User } from '../types';
-import compile = WebAssembly.compile;
 
 
 interface RandomCredentials {
@@ -68,9 +67,7 @@ export class TestClient {
     }
 
     async query(query: string, raiseError = true): Promise<any> {
-        console.time('query');
         const response = await post(this.url, { ...this.options, body: { query } });
-        console.timeEnd('query');
         if (raiseError && response.error) throw new Error(`Query ${query} failed`);
         return response.data;
     }
