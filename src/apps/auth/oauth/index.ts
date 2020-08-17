@@ -82,6 +82,7 @@ export class OAuth {
 
     views(config: any) {
         passport.use(new this.strategy(config, this.getOrCreateUser));
+        console.log(this.loginURL, this.callbackURL);
 
         return [
             [this.loginURL, this.authenticate],

@@ -14,7 +14,7 @@ afterAll(async () => {
 });
 
 
-const $pingQuery = () => `
+const $ping = () => `
     query {
         ping
     }
@@ -23,7 +23,7 @@ const $pingQuery = () => `
 describe('ping test', () => {
     test('ping', async () => {
         const client = new TestClient();
-        const { ping } = await client.query($pingQuery());
+        const { ping } = await client.query($ping());
         expect(ping).toEqual('pong');
     });
 
@@ -31,7 +31,7 @@ describe('ping test', () => {
         const client = new TestClient();
 
         const count = await Ping.count();
-        const { ping } = await client.query($pingQuery());
+        const { ping } = await client.query($ping());
         expect(ping).toEqual('pong');
 
         const newCount = await Ping.count();

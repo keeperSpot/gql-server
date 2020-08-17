@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import { Application } from 'express';
 
 import { makeExecutableSchema } from 'graphql-tools';
+import { importSchema } from 'graphql-import';
 import { mergeResolvers, mergeTypes } from 'merge-graphql-schemas';
 import { sync as globSync } from 'glob';
 import { GraphQLSchema } from 'graphql';
@@ -23,7 +24,9 @@ export const generateTypeDefs = (): string =>
     mergeTypes(
         paths('schema.@(gql|graphql)')
             .map((path: string) =>
-                readFileSync(path, { encoding: 'utf8' }),
+                importSchema(
+                    readFileSync(path, { encoding: 'utf8' })
+                ),
             ),
     );
 

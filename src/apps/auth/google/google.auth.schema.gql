@@ -1,5 +1,7 @@
+# import UserOrExceptions from 'apps/schema.gql'
+
 type Mutation {
 
     """Login/Create account with google"""
-    loginWithGoogle(id: String!, token: String!): User
+    loginWithGoogle(id: String!, token: String!): UserOrExceptions
 }

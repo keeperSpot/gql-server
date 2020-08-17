@@ -50,6 +50,7 @@ export class User extends BaseEntity {
     @OneToMany(type => Email, email => email.user)
     emails: Email[];
 
+
     static async findByEmails(emails: string[]): Promise<User[]> {
         const emailObjs = await Email.find({
             cache: true,
@@ -99,13 +100,10 @@ export class User extends BaseEntity {
         });
     }
 
-    static async fromSession(session: Session, full = false): Promise<User | null> {
+    static async fromSession(session: Session): Promise<User | null> {
         const { userId } = session;
         if (!userId) return null;
-        return await User.findOne({
-            where: { id: userId },
-            relations: full ? ['emails', 'phones'] : [],
-        });
+        return await User.findOne({ where: { id: userId } });
     }
 
     async login(session: Session): Promise<User> {

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { HttpServer, ResolverContext, ContextProvider } from 'types';
 import { Connection } from 'typeorm';
 import { GraphQLServer } from 'graphql-yoga';

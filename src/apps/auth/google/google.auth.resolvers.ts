@@ -1,6 +1,8 @@
-import { ResolverMap } from 'types';
+import { IExceptions, ResolverMap } from 'types';
 import { OAuth2Client } from 'google-auth-library';
+import { Exceptions } from 'helpers/exceptions';
 import { User } from 'apps/auth/user.entity';
+import { INVALID_GOOGLE_SIGN_IN } from './exceptions';
 
 let client = null;
 const Resolvers: ResolverMap = {
@@ -9,24 +11,29 @@ const Resolvers: ResolverMap = {
             _,
             { id, token }: GQL.ILoginWithGoogleOnMutationArguments,
             { session },
-        ): Promise<User | null> => {
+        ): Promise<User | IExceptions> => {
+            const e = new Exceptions({ id, token });
             if (!client) client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-            const ticket = await client.verifyIdToken({
-                idToken: token,
-                audience: process.env.GOOGLE_CLIENT_ID,
-            });
-            const payload = ticket.getPayload();
-            const userid = payload['sub'];
 
-            if (userid === id) {
-                const [user] = await User.getOrCreateUserByEmails({
-                    emails: [payload.email],
-                    name: payload.name,
+            try {
+                const ticket = await client.verifyIdToken({
+                    idToken: token,
+                    audience: process.env.GOOGLE_CLIENT_ID,
                 });
-                await user.login(session);
-                return user;
-            }
-            return null;
+                const payload = ticket.getPayload();
+                const userid = payload['sub'];
+
+                if (userid === id) {
+                    const [user] = await User.getOrCreateUserByEmails({
+                        emails: [payload.email],
+                        name: payload.name,
+                    });
+                    await user.login(session);
+                    return user;
+                }
+            } catch (error) {}
+
+            return e.push(INVALID_GOOGLE_SIGN_IN({}));
         },
     },
 };

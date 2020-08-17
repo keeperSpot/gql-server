@@ -99,13 +99,45 @@ declare namespace GQL {
     /**
      * Login/Create account with google
      */
-    loginWithGoogle: IUser | null;
+    loginWithGoogle: UserOrExceptions | null;
   }
 
   interface ILoginWithGoogleOnMutationArguments {
     id: string;
     token: string;
   }
+
+  type UserOrExceptions = IUser | IExceptions;
+
+  interface IExceptions {
+    __typename: 'Exceptions';
+    arguments: any | null;
+    exceptions: Array<IException | null> | null;
+  }
+
+  interface IException {
+    __typename: 'Exception';
+    code: string;
+    message: string | null;
+    path: string | null;
+    data: any | null;
+  }
+
+  interface IDone {
+    __typename: 'Done';
+    done: boolean | null;
+  }
+
+  interface IFile {
+    __typename: 'File';
+    id: string;
+    path: string;
+    filename: string;
+    mimetype: string;
+    encoding: string;
+  }
+
+  type DoneOrExceptions = IDone | IExceptions;
 }
 
 // tslint:enable
