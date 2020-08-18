@@ -26,17 +26,25 @@ describe('shop exist test', () => {
         const client = new TestClient();
         const shop = new Shop()
         shop.name = 'testShop'
-        shop._slug = 'testSlug'
+        shop.slug = 'testSlug'
         shop.address = 'asdlk asdf aldff'
         await shop.save()
-        {
-            const { shopExist } = await client.query($shopExist(shop._slug));
-            expect(shopExist).toEqual(true);
-        }
-        {
-            const { shopExist } = await client.query($shopExist(shop._slug + shop.name));
-            expect(shopExist).toEqual(false);
-        }
+        const { shopExist } = await client.query($shopExist(shop.slug));
+        expect(shopExist).toEqual(true);
+
+    });
+    test('shop exist false', async () => {
+
+        const client = new TestClient();
+        const shop = new Shop()
+        shop.name = 'newshop'
+        shop.slug = 'newShop'
+        shop.address = 'asdlk asdf aldff'
+        await shop.save()
+
+        const { shopExist } = await client.query($shopExist(shop.slug + shop.name));
+        expect(shopExist).toEqual(false);
+
     });
 });
 
