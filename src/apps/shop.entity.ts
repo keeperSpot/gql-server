@@ -28,6 +28,7 @@ export class Shop extends BaseEntity {
     }
 
     set slug(value) {
+        console.log('slug', value, _.kebabCase(value));
         this._slug = _.kebabCase(value);
     }
 }
