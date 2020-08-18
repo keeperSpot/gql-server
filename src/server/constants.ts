@@ -25,3 +25,5 @@ export const ACCOUNT_LOCKING_TIME_MAP = {
     '19': 1000 * 60 * 60,
     '20': 1000 * 60 * 24,
 };
+
+export const MAIN_DOMAIN = 'keeperspot.in'

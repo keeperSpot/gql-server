@@ -1,11 +1,17 @@
+import { ValidationError as YupValidationError, YupValidator } from 'yup';
 import { IException, IExceptions } from 'types';
 import * as _ from 'lodash';
 
 type Exception = (details: Partial<IException>) => IException;
 
+
+export const VALIDATION_EXCEPTION = 'VALIDATION_EXCEPTION';
+
+
 export class Exceptions {
     private readonly $args: any;
     private readonly $exceptions: IException[];
+    public data: any;
 
     constructor(args = {}) {
         this.$args = args;
@@ -33,6 +39,17 @@ export class Exceptions {
         return this.exceptions;
     }
 
+    async validate(validator: YupValidator, obj: any): Promise<boolean> {
+        try {
+            this.data = await validator.validate(obj);
+            return true;
+        } catch (validationException) {
+            this.push(Exceptions.ValidationException(validationException))
+        }
+
+        return false;
+    }
+
     static generator(defaults: Partial<IException>) {
         return function <Exception>(details = {}) {
             return <IException>{
@@ -47,4 +64,22 @@ export class Exceptions {
         e.push(exceptions);
         return e.exceptions;
     }
+
+    static ValidationException(errors: YupValidationError): IException[] {
+        if (errors.inner.length > 0)
+            return errors.inner.map(
+                ({ message, path, value }): IException =>
+                    Exceptions.generator({
+                        code: VALIDATION_EXCEPTION,
+                        message,
+                    })({ path, data: { value } }),
+            );
+
+        return [
+            Exceptions.generator({
+                code: VALIDATION_EXCEPTION,
+                message: errors.message,
+            })({ path: null, data: { value: errors.value } }),
+        ];
+    };
 }

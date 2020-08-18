@@ -1,7 +1,7 @@
 import { IExceptions, ResolverMap } from 'types';
 import { OAuth2Client } from 'google-auth-library';
 import { Exceptions } from 'helpers/exceptions';
-import { User } from 'apps/auth/user.entity';
+import { User } from 'apps/user.entity';
 import { INVALID_GOOGLE_SIGN_IN } from './exceptions';
 
 let client = null;
@@ -33,7 +33,7 @@ const Resolvers: ResolverMap = {
                 }
             } catch (error) {}
 
-            return e.push(INVALID_GOOGLE_SIGN_IN({}));
+            return e.push(INVALID_GOOGLE_SIGN_IN);
         },
     },
 };

@@ -1,5 +1,5 @@
 import { ResolverMap } from 'types';
-import { User } from 'apps/auth/user.entity';
+import { User } from 'apps/user.entity';
 import { isTest } from 'server/constants';
 
 

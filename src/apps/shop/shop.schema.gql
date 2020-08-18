@@ -1,0 +1,10 @@
+# import Exceptions from 'apps/schema.gql'
+
+type Shop {
+    name: String
+    domains: [String]
+    address: String
+    slug: String
+}
+
+union ShopOrExceptions = Shop | Exceptions

@@ -1,5 +1,5 @@
 import { ResolverMap } from 'types';
-import { User } from '../user.entity';
+import { User } from 'apps/user.entity';
 
 const Resolvers: ResolverMap = {
     Query: {

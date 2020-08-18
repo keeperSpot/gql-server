@@ -2,7 +2,8 @@ import { Server } from 'server';
 import { Connection } from 'typeorm';
 
 import { TestClient } from 'server/client';
-import { User, Email } from './user.entity';
+import { User, Email } from 'apps/user.entity';
+import { MULTIPLE_USERS_FOUND } from '../exceptions';
 
 
 let conn: Connection;
@@ -32,7 +33,7 @@ describe('find users with email', () => {
 
         const user = await User.create({ name, emails: emailObjs });
         await user.save();
-        return { user, emails, emailObjs }
+        return { user, emails, emailObjs };
     };
 
     test('insert one email and find', async () => {
@@ -74,18 +75,18 @@ describe('find users with email', () => {
         const byRandomEmails = await User.findByEmails([randomEmail]);
         expect(byRandomEmails).toHaveLength(0);
 
-        const by1Only = await User.findByEmails(emails1.slice(0, 2))
+        const by1Only = await User.findByEmails(emails1.slice(0, 2));
         expect(by1Only).toHaveLength(1);
         expect(by1Only[0].id).toEqual(user1.id);
 
-        const by2Only = await User.findByEmails(emails2.slice(0, 2))
+        const by2Only = await User.findByEmails(emails2.slice(0, 2));
         expect(by2Only).toHaveLength(1);
         expect(by2Only[0].id).toEqual(user2.id);
 
-        const by1and2Only = await User.findByEmails([emails1[0], emails2[0]])
+        const by1and2Only = await User.findByEmails([emails1[0], emails2[0]]);
         expect(by1and2Only).toHaveLength(2);
 
-        const by2and3Only = await User.findByEmails([emails2[3], emails3[1]])
+        const by2and3Only = await User.findByEmails([emails2[3], emails3[1]]);
         expect(by2and3Only).toHaveLength(2);
 
         const user1obj0 = await User.findOneByEmails([emails1[0]]);
@@ -101,6 +102,8 @@ describe('find users with email', () => {
         const userNull = await User.findOneByEmails([randomEmail2]);
         expect(userNull).toEqual(null);
 
-        expect(User.findOneByEmails([emails1[0], emails2[0]])).rejects.toEqual('Many users found.');
+        expect(User.findOneByEmails([emails1[0], emails2[0]]))
+            .rejects
+            .toEqual(MULTIPLE_USERS_FOUND({ data: { emails: [emails1[0], emails2[0]] } }));
     });
 });

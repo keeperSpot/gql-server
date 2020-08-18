@@ -2,7 +2,7 @@ import { Server } from 'server';
 import { Connection } from 'typeorm';
 
 import { TestClient } from 'server/client';
-import { User } from 'apps/auth/user.entity';
+import { User } from 'apps/user.entity';
 
 let conn: Connection;
 beforeAll(async () => {

@@ -3,7 +3,7 @@ import { Request } from 'types';
 
 import * as _ from 'lodash';
 import * as passport from 'passport';
-import { User } from '../user.entity';
+import { User } from 'apps/user.entity';
 
 type AuthenticationDone = (err: any, user: User | null) => void;
 

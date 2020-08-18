@@ -3,6 +3,7 @@ import { In } from 'typeorm';
 import { BaseEntity } from 'helpers/db';
 import * as _ from 'lodash';
 import { Session } from 'types';
+import { AUTHENTICATION_REQUIRED, MULTIPLE_USERS_FOUND } from './exceptions';
 
 @Entity('phone')
 export class Phone extends BaseEntity {
@@ -68,7 +69,7 @@ export class User extends BaseEntity {
         if (users.length == 0) return null;
         if (users.length == 1) return users[0];
 
-        throw Error('Many users found.');
+        throw MULTIPLE_USERS_FOUND({ data: { emails } });
     }
 
     static async createUserByEmails({ name, emails }: CreateUserByEmailsOptions): Promise<User> {
@@ -113,5 +114,11 @@ export class User extends BaseEntity {
 
     static async logout(session: Session, logoutFromAll = false): Promise<void> {
         delete session.userId;
+    }
+
+    static async authenticationRequired(session: Session): Promise<User> {
+        const user = await User.fromSession(session);
+        if (!user) throw AUTHENTICATION_REQUIRED();
+        return user;
     }
 }
