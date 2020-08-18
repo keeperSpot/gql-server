@@ -106,4 +106,19 @@ export class TestClient {
         const user = await this.register({ name, email });
         return { user, name, email }
     }
+
+    static checkError(qt: string) {
+        return (data: any) => (errorCode: any, path: string | null): void => {
+            const res = data[qt];
+            expect(res?.__typename).toEqual('Exceptions');
+            expect(res?.exceptions).toEqual(
+                expect.arrayContaining([
+                    {
+                        code: errorCode().code,
+                        path,
+                    },
+                ]),
+            );
+        };
+    }
 }
