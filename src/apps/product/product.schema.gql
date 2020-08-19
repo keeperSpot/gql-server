@@ -1,0 +1,9 @@
+type product {
+    name: String
+    price:String
+}
+
+type Query {
+    """Returns Array of Products"""
+    products:[product]
+}

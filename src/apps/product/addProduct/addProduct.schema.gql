@@ -1,0 +1,5 @@
+type Mutation {
+
+    """Login/Create account with google"""
+    addProduct(name: String!,price: String):product
+}

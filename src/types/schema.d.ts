@@ -106,6 +106,13 @@ declare namespace GQL {
     id: string;
     token: string;
   }
+
+  interface AddProductMutationArguments{
+    name:string;
+    price:string;
+  }
 }
+
+
 
 // tslint:enable
