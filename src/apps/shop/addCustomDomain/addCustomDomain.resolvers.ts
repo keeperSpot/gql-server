@@ -1,35 +1,31 @@
 import { IExceptions,ICustomDomain, ResolverMap } from 'types';
-import { User } from 'apps/user.entity';
 import { Shop } from 'apps/shop.entity';
 import { Exceptions } from 'helpers/exceptions';
-import {  ERROR_IN_ADDING_CUSTOM_DOMAIN } from '../exceptions';
+import {  ERROR_IN_FINDING_SHOP,INVALID_ARGUMENTS_RECEIVED } from '../exceptions';
 import {addCustomDomainArgsValidator} from './validators';
-import { shopArgsValidator } from '../addShop/validators';
-//todo : Recaptcha Google
+
 
 const Resolvers: ResolverMap = {
     ShopOrExceptions: {
         __resolveType: (obj): string => (obj.exceptions ? 'Exceptions' : 'CustomDomain'),
     },
     Mutation: {
-        addCustomDomain: async (_, args, { session }): Promise<Shop | IExceptions> => {
+        addCustomDomain: async (_, args:GQL.IAddCustomDomainOnMutationArguments,
+                                { session }): Promise<Shop | IExceptions> => {
             const e = new Exceptions(args);
-
-            if (!await e.validate(addCustomDomainArgsValidator, args)) return e.exceptions;
 
             const { customDomain, slug } = args;
 
+            if (!await e.validate(addCustomDomainArgsValidator, args))
+                return e.push(INVALID_ARGUMENTS_RECEIVED({ data: { customDomain: customDomain } }))
+
             const shop = await Shop.findOne({_slug:slug});
-            console.log(shop)
-
-            shop.domain = customDomain ;
-
-            try {
+            if(shop){
+                shop.domain = customDomain ;
                 await shop.save();
-            } catch (error) {
-                return e.push(ERROR_IN_ADDING_CUSTOM_DOMAIN({ data: { customDomain: customDomain } }))
+                return shop
             }
-        return shop
+            return e.push(ERROR_IN_FINDING_SHOP({ data: { customDomain: customDomain } }))
         }
     },
 };

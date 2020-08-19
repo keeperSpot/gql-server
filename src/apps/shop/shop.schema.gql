@@ -2,7 +2,7 @@
 
 type Shop {
     name: String
-    domains: [String]
+    domain: String
     address: String
     slug: String
 }
