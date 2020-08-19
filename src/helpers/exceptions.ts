@@ -1,4 +1,4 @@
-import { ValidationError as YupValidationError, YupValidator } from 'yup';
+import { ValidationError as YupValidationError } from 'yup';
 import { IException, IExceptions } from 'types';
 import * as _ from 'lodash';
 
@@ -39,7 +39,7 @@ export class Exceptions {
         return this.exceptions;
     }
 
-    async validate(validator: YupValidator, obj: any): Promise<boolean> {
+    async validate(validator, obj: any): Promise<boolean> {
         try {
             this.data = await validator.validate(obj);
             return true;
