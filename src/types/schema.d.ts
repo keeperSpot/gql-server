@@ -111,6 +111,15 @@ declare namespace GQL {
     name:string;
     price:string;
   }
+  interface AddCategoryMutationArguments{
+    name:string;
+    code:string;
+    representation:string;
+    parent:string;
+  }
+  interface fetchCategoriesByParent{
+    parent:string;
+  }
 }
 
 
