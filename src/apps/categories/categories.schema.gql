@@ -1,0 +1,10 @@
+type category{
+    name:String,
+    code:String,
+    representation:String,
+    parent:String
+}
+
+type Query{
+    categories:[category]
+}
