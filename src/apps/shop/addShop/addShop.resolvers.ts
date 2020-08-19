@@ -5,6 +5,8 @@ import { Exceptions } from 'helpers/exceptions';
 import { shopArgsValidator } from './validators';
 import { DUPLICATE_SLUG } from '../exceptions';
 
+//todo : Recaptcha Google
+
 const Resolvers: ResolverMap = {
     ShopOrExceptions: {
         __resolveType: (obj): string => (obj.exceptions ? 'Exceptions' : 'Shop'),
@@ -28,7 +30,6 @@ const Resolvers: ResolverMap = {
             } catch (error) {
                 return e.push(DUPLICATE_SLUG({ data: { slug: shop.slug } }))
             }
-
             return shop;
         }
     },

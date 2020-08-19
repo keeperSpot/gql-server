@@ -1,0 +1,4 @@
+type Query {
+    """Check if shop already exist"""
+    shopExist(slug:String!): Boolean
+}

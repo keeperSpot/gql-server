@@ -51,3 +51,8 @@ export interface IExceptions {
     exceptions: IException[];
     arguments: any
 }
+export interface ICustomDomain{
+    customDomain:string;
+    slug:string;
+    status:string
+}

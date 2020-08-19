@@ -37,6 +37,15 @@ declare namespace GQL {
      * Ping can be used to find is server alive or not
      */
     ping: string;
+
+    /**
+     * Check if shop already exist
+     */
+    shopExist: boolean | null;
+  }
+
+  interface IShopExistOnQueryArguments {
+    slug: string;
   }
 
   /**
@@ -100,11 +109,24 @@ declare namespace GQL {
      * Login/Create account with google
      */
     loginWithGoogle: UserOrExceptions | null;
+    addCustomDomain: ShopOrExceptions | null;
+    addShop: ShopOrExceptions | null;
   }
 
   interface ILoginWithGoogleOnMutationArguments {
     id: string;
     token: string;
+  }
+
+  interface IAddCustomDomainOnMutationArguments {
+    slug: string;
+    customDomain: string;
+  }
+
+  interface IAddShopOnMutationArguments {
+    name: string;
+    slug?: string | null;
+    address: string;
   }
 
   type UserOrExceptions = IUser | IExceptions;
@@ -121,6 +143,16 @@ declare namespace GQL {
     message: string | null;
     path: string | null;
     data: any | null;
+  }
+
+  type ShopOrExceptions = IShop | IExceptions;
+
+  interface IShop {
+    __typename: 'Shop';
+    name: string | null;
+    domain: string | null;
+    address: string | null;
+    slug: string | null;
   }
 
   interface IDone {

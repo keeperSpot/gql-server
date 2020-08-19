@@ -1,0 +1,6 @@
+# import ShopOrExceptions from 'apps/shop/shop.schema.gql'
+
+type Mutation
+{
+    addCustomDomain(slug: String!, customDomain: String!):ShopOrExceptions
+}
