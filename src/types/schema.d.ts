@@ -168,6 +168,16 @@ declare namespace GQL {
     mimetype: string;
     encoding: string;
   }
+  interface AddCategoryMutationArguments{
+    name:string;
+    code:string;
+    representation:string;
+    parent:string;
+  }
+  interface fetchCategories{
+    parent:string;
+  }
+
 
   type DoneOrExceptions = IDone | IExceptions;
 }
