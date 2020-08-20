@@ -1,4 +1,4 @@
-type category{
+type Category{
     name:String,
     code:String,
     representation:String,
@@ -6,5 +6,5 @@ type category{
 }
 
 type Query{
-    categories(representation:String):[category]
+    categories(representation:String):[Category]
 }

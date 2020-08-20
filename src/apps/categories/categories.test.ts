@@ -26,12 +26,12 @@ const $categories = () => `
 
 const $addCategory = (name: string, code: string, representation: string, parent: string) => `
     mutation {
-  addCategory(name: "${name}",code:"${code}",representation:"${representation}",parent:"${parent}"){
-       name
-       code
-       representation
-       parent
-  }
+       addCategory(name: "${name}",code:"${code}",representation:"${representation}",parent:"${parent}"){
+           name
+           code
+           representation
+           parent
+        }
 }
 `;
 
@@ -46,8 +46,8 @@ describe('categories',()=>{
     // test('adding category',async()=>{
     //     const client = new TestClient();
     //     const newCategory = new Category();
-    //     newCategory.name = 'testcategory';
-    //     newCategory.code='poiuy789';
+    //     newCategory.name = 'testCategory';
+    //     newCategory.code='po789';
     //     newCategory.parent='base';
     //     newCategory.representation='/testCategory'
     //     await newCategory.save()

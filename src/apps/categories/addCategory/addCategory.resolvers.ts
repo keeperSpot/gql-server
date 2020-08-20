@@ -3,7 +3,7 @@ import {Category} from '../categories.entity';
 
 const Resolvers: ResolverMap = {
     Mutation: {
-        addCategory: async function(_, { name ,code,representation,parent}:GQL.AddCategoryMutationArguments,): Promise<Category | null> {
+        addCategory: async(_, { name ,code,representation,parent}:GQL.AddCategoryMutationArguments,): Promise<Category | null> => {
             const newCategory=new Category();
             newCategory.name=name;
             newCategory.code=code;
@@ -12,7 +12,7 @@ const Resolvers: ResolverMap = {
             await newCategory.save();
             console.log(newCategory);
             return newCategory;
-        },
+        }
     },
 };
 

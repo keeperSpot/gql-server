@@ -1,10 +1,9 @@
-
+#import  Category from "apps/categories/categories.schema.gql";
 type Mutation {
-    """Login/Create account with google"""
     addCategory(
         name: String!,
         code: String!,
         representation:String,
         parent:String
-    ):category
+    ):Category
 }

@@ -175,7 +175,7 @@ declare namespace GQL {
     parent:string;
   }
   interface fetchCategories{
-    parent:string;
+    representation:string;
   }
 
 
