@@ -1,0 +1,8 @@
+# import ShopOrExceptions from 'apps/shop/shop.schema.gql'
+type Mutation {
+    editShop(
+        name: String,
+        slug: String,
+        address: String
+    ): ShopOrExceptions
+}

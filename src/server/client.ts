@@ -9,6 +9,7 @@ interface RandomCredentials {
     email: string;
     password: string;
     name: string;
+    address: string;
 }
 
 const $register = ({ email, name }) => `
@@ -76,6 +77,7 @@ export class TestClient {
         return {
             email: `${uuid()}@example.com`,
             password: `Pass:${uuid()}`,
+            address: `Address: ${uuid()}`,
             name: uniqueNamesGenerator({
                 dictionaries: [adjectives, colors, animals],
                 separator: ' ',

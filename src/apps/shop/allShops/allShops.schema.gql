@@ -1,0 +1,11 @@
+
+type Shop {
+    name: String
+    domain: String
+    address: String
+    slug: String
+    id: String
+}
+type Query {
+    allShop:[Shop]!
+}
