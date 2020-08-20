@@ -14,12 +14,12 @@ export class Brand extends BaseEntity {
     @Column({ nullable: false ,length:3})
     country: string;
 
-    @Column({ nullable: false})
+    @Column({ nullable: true})
     isIndian: boolean;
 
     @AfterLoad()
     setIsIndian() {
-        this.isIndian = this.country==='IND';
+        return this.country==='IND';
     }
 
 

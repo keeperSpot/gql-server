@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne  } from 'typeorm';
+import { Entity, Column, ManyToOne,AfterLoad  } from 'typeorm';
 import { BaseEntity } from 'helpers/db';
 import { Product } from './product.entity';
 

@@ -16,7 +16,7 @@ export class Product extends BaseEntity {
     @Column({ nullable: true ,length:3})
     country: string;
 
-    @Column({ nullable: false})
+    @Column({ nullable: true})
     isIndian: boolean;
 
     @AfterLoad()
