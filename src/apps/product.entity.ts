@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, OneToOne, AfterLoad,JoinColumn } from 'typeorm';
+import { Entity, Column, OneToMany, ManyToOne ,JoinColumn } from 'typeorm';
 import { BaseEntity } from 'helpers/db';
 import {Variant} from './variant.entity';
 import { Brand } from './brand.entity';
@@ -16,9 +16,7 @@ export class Product extends BaseEntity {
     @Column({ nullable: true ,length:3})
     country: string;
 
-
-    @OneToOne(type => Brand)
-    @JoinColumn()
+    @ManyToOne(type => Brand, brand => brand.product)
     brand: Brand;
 
     @OneToMany(type => Variant, variant => variant.product)

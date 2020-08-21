@@ -53,9 +53,7 @@ const createProduct =async (name,brand,container,country,variant) => {
 
 describe('Product Test', () => {
 
-    test('product', async () => {
-
-
+    test('product addition', async () => {
         const variant = await createVariant('Nokia 8081 3GB | 32GB',
             'Ggg Asher',3000,'CellPhone')
 
@@ -68,52 +66,40 @@ describe('Product Test', () => {
         const newProduct = await Product.findOne({where:{name:'Nokia 8081'},relations:['variant','brand']})
         expect(newProduct.name).toEqual('Nokia 8081');
 
-        const newBrand =  await  Brand.findOne({where:{name:'Nokia'}})
-        const newVariant =  await  Variant.findOne({where:{name:'Nokia 8081 4GB | 64GB'},relations:['product',]})
-        const newProduct1 = await Product.findOne({where:{brand:newBrand},relations:['variant','brand']})
-
-
-
-        console.log(newVariant,newBrand)
-
-        // const isVariant1
-        // expect(newProduct.variant[0]).toEqual(variant)
-        // expect(newProduct.variant[1]).toEqual(variant2)
     });
 
-    test('product finding', async () => {
-        const brand = new Brand();
-        brand.name = 'Nokia1';
-        brand.description = 'Connecting People1';
-        brand.country = 'IND';
+    test('Finding by Brand', async () => {
+        const variant = await createVariant('Nokia! 8081 3GB | 32GB',
+            'Ggg Asher',3000,'CellPhone')
 
-        const variant = new Variant();
-        variant.name = 'Nokia1 8081 3GB | 32GB'
-        variant.barcode = 'Ggg Ashejhgr'
-        variant.price = 3000
-        variant.sku = 'CellPhone'
+        const variant2 = await createVariant('Nokia! 8081 4GB | 64GB',
+            'Ggg Asher',5000,'CellPhone')
 
-        const variant2 = new Variant();
+        const variant3 = await createVariant('Nokia! 8281 4GB | 64GB',
+            'Ggg Asher',6000,'CellPhone')
 
-        variant2.name = 'Nokia1 8081 4GB | 64GB'
-        variant2.barcode = 'Gggghjg Asher'
-        variant2.price = 5000
-        variant2.sku = 'CellPhonejhg'
+        const brand = await createBrand('Nokia!','Connecting People','IND')
+        await createProduct('Nokia! 8081',brand,'EN','IND',[variant,variant2])
+        await createProduct('Nokia! 8281',brand,'EN','IND',[variant3])
 
-
-        const product = new Product();
-
-        product.name = 'Nokia1 8081'
-        product.brand = brand
-        product.containerType = 'EN'
-        product.country = 'IND'
-        product.variant = [variant,variant2]
-
-        await product.save()
-
-        const product1 =  await Product.findOne({brand:{name:'Nokia1 8081 4GB | 64GB'}})
-        const product2 =  await Product.findOne({variant:[{name:'Nokia 8081 4GB | 64GB'}]})
-            expect(product1.brand.name).toEqual('Nokia1')
-            expect(product2.variant[1].name).toEqual('Nokia 8081 4GB | 64GB')
+        const newBrand =  await  Brand.findOne({where:{name:'Nokia!'},relations:['product']})
+        expect(newBrand.name).toEqual('Nokia!');
+        expect(newBrand.product.some(Item=>(Item.name==='Nokia! 8081'))).toEqual(true)
     });
+
+    test('Finding by Variant', async () => {
+        const variant = await createVariant('Nokia2 8081 3GB | 32GB',
+            'Ggg Asher',3000,'CellPhone')
+
+        const variant2 = await createVariant('Nokia2 8081 4GB | 64GB',
+            'Ggg Asher',5000,'CellPhone')
+
+        const brand = await createBrand('Nokia2','Connecting People','IND')
+        await createProduct('Nokia2 8081',brand,'EN','IND',[variant,variant2])
+
+        const newVariant =  await  Variant.findOne({where:{name:'Nokia2 8081 4GB | 64GB'},relations:['product',]})
+        expect(newVariant.name).toEqual('Nokia2 8081 4GB | 64GB');
+        expect(newVariant.product.name).toEqual('Nokia2 8081');
+    });
+
 });

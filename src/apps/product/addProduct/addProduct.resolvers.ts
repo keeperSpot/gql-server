@@ -1,10 +1,11 @@
 import { ResolverMap } from 'types';
-import { Product } from '../product.entity';
-import {Entity, PrimaryGeneratedColumn, Column,getConnection} from 'typeorm';
+import { Product } from '../../product.entity';
+
 const Resolvers: ResolverMap = {
   Mutation: {
     addProduct: async (_,{ name }): Promise<Product> => {
-      const pro = new Product(name);
+      const pro = new Product( );
+      pro.name = name;
       await pro.save();
       return pro;
     }

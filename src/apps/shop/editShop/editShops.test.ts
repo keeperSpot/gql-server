@@ -65,17 +65,15 @@ describe('editShops test', () => {
         const {addShop : { id }} = await client.query($addShop( name, name, name ));
         {
             const { name } = await client.registerRandomUser();
-            const {editShop : { id }} = await client.query($editShop( name, name, name ));
-            
+            const {editShop:{ id }} = await client.query($editShop( name, name, name ));
+
             const shop = await Shop.findOne({where : {id: id}})
-            
+
             expect(shop.name).toEqual(name);
             expect(shop.address).toEqual(name);
             expect(shop.slug).toEqual(kebabCase(name));
-            
+
         }
-        
-        
     });
 
 

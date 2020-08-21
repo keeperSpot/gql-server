@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne,AfterLoad  } from 'typeorm';
+import { Entity, Column, ManyToOne  } from 'typeorm';
 import { BaseEntity } from 'helpers/db';
 import { Product } from './product.entity';
 
@@ -6,7 +6,7 @@ import { Product } from './product.entity';
 @Entity('variant')
 export class Variant extends BaseEntity {
 
-    @Column({ nullable: false ,length:21})
+    @Column({ nullable: false ,length:225})
     name: string;
 
     @Column({ nullable: false })
@@ -20,7 +20,6 @@ export class Variant extends BaseEntity {
 
     @Column({ nullable: true ,length:255})
     barcode: string;
-
 
     @ManyToOne(type => Product, product => product.variant)
     product: Product;
