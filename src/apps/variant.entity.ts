@@ -15,16 +15,19 @@ export class Variant extends BaseEntity {
     @Column({ nullable: false ,length:49})
     sku: string;
 
-    // @Column({ nullable: false ,length:49})
-    // details: any[];
+    @Column('json')
+    details: any;
 
     @Column({ nullable: true ,length:255})
     barcode: string;
 
-    @Column({ nullable: true })
-    isIndian: boolean;
-
 
     @ManyToOne(type => Product, product => product.variant)
     product: Product;
+
+    get isIndian(){
+        return this.product.country==='IND';
+    }
+
+
 }

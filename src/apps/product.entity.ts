@@ -16,13 +16,6 @@ export class Product extends BaseEntity {
     @Column({ nullable: true ,length:3})
     country: string;
 
-    @Column({ nullable: true})
-    isIndian: boolean;
-
-    @AfterLoad()
-    setIsIndian() {
-        this.isIndian = this.country==='IND';
-    }
 
     @OneToOne(type => Brand)
     @JoinColumn()
@@ -30,4 +23,8 @@ export class Product extends BaseEntity {
 
     @OneToMany(type => Variant, variant => variant.product)
     variant: Variant[];
+
+    get isIndian(){
+        return this.country==='IND';
+    }
 }

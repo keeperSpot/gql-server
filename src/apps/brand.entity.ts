@@ -1,6 +1,6 @@
-import { Entity, Column ,AfterLoad } from 'typeorm';
+import { Entity, Column ,OneToOne,JoinColumn } from 'typeorm';
 import { BaseEntity } from 'helpers/db';
-
+import {Product} from './product.entity'
 
 @Entity('brand')
 export class Brand extends BaseEntity {
@@ -14,13 +14,12 @@ export class Brand extends BaseEntity {
     @Column({ nullable: false ,length:3})
     country: string;
 
-    @Column({ nullable: true})
-    isIndian: boolean;
+    @OneToOne(type => Product, product => product.brand)
+    @JoinColumn()
+    product: Product;
 
-    @AfterLoad()
-    setIsIndian() {
+    get isIndian(){
         return this.country==='IND';
     }
-
 
 }
