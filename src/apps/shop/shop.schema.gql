@@ -5,6 +5,7 @@ type Shop {
     domain: String
     address: String
     slug: String
+    id: String
 }
 
 union ShopOrExceptions = Shop | Exceptions

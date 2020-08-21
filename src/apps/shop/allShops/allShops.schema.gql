@@ -1,0 +1,5 @@
+# import Shop from 'apps/shop/shop.schema.gql'
+
+type Query {
+    allShop:[Shop]!
+}

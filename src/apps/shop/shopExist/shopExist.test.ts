@@ -3,7 +3,6 @@ import { Connection } from 'typeorm';
 
 import { TestClient } from 'server/client';
 import { Shop } from 'apps/shop.entity';
-import { Ping } from '../../ping/ping.entity';
 
 
 let conn: Connection;
