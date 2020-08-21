@@ -1,0 +1,9 @@
+#import  Category from "apps/categories/categories.schema.gql";
+type Mutation {
+    addCategory(
+        name: String!,
+        code: String!,
+        representation:String,
+        parent:Category
+    ):Category
+}
