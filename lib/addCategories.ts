@@ -10,7 +10,7 @@ let conn: Connection;
 const main = async () => {
    conn = await Server.connectToDB();
    await recursive(categories,null);
-   await conn.close().then(()=>console.log('dvb closed'));
+   await conn.close();
 }
 
 const insertIntoDb = async(name:string,code:string,representation:string,parent:any )=>{
@@ -22,7 +22,7 @@ const insertIntoDb = async(name:string,code:string,representation:string,parent:
     try {
         await newCategory.save();
     } catch (error) {
-        console.log('fuck');
+        console.log(error);
     }
 }
 

@@ -4,6 +4,7 @@ type Category{
     name:String,
     code:String,
     representation:String,
+    parent:Category
 }
 
 union CategoryOrException = Category | Exception
