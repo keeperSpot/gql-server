@@ -1,9 +1,12 @@
+# import Exceptions from 'apps/schema.gql'
+
 type Category{
     name:String,
     code:String,
     representation:String,
-    parent:String
 }
+
+union CategoryOrException = Category | Exception
 
 type Query{
     categories(representation:String):[Category]

@@ -4,6 +4,5 @@ type Mutation {
         name: String!,
         code: String!,
         representation:String,
-        parent:String
     ):Category
 }
