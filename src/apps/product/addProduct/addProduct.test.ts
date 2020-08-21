@@ -13,12 +13,12 @@ afterAll(async () => {
     await conn.close();
 });
 
-
 const $product = () => `
     query {
         product{name}
     }
 `;
+
 const $addProduct =({ name }) =>`
     mutation {
         addProduct(name:"${name}"){
@@ -27,6 +27,7 @@ const $addProduct =({ name }) =>`
         }
     }
 `
+
 describe('product test', () => {
     test('addproduct query', async () => {
         const client = new TestClient();

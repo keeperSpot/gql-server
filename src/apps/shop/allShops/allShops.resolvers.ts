@@ -10,7 +10,6 @@ const Resolvers: ResolverMap = {
         allShop: async (_, __): Promise<Shop[]> => {
             const shops = await Shop.find();
             return shops;
-        
        },
     }
 

@@ -37,17 +37,19 @@ const $addShop =( name: string , slug:string , address:string ) =>`
     }
     }
 `
+
 describe('allShops test', () => {
     test('allShops retrive after adding', async () => {
         const client = new TestClient();
         const { user, email, name } = await client.registerRandomUser();
         await client.login({ userId: user.id, email });
         await client.query($addShop( name, name, name ));
-        const allShops = await Shop.find()
-        allShops.map(shop=>{
+        const {allShop} = await client.query($allShop());
+        allShop.map(shop=>{
             expect(shop.name).toEqual(name);
         })
-        
+        const count = await Shop.count();
+        expect(count).toEqual(allShop.length);
     });
 
     // test('product db addition', async () => {

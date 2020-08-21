@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from 'helpers/db';
 import * as _ from 'lodash';
 import { User } from './user.entity';
@@ -19,10 +19,11 @@ export class Shop extends BaseEntity {
     @Column('text')
     address: string;
 
-    @OneToOne( type => User)
+    @ManyToOne( type => User)
     @JoinColumn()
     owner: User;
 
+    
     get slug() {
         return this._slug;
     }

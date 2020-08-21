@@ -3,8 +3,12 @@ import { Connection } from 'typeorm';
 
 import { TestClient } from 'server/client';
 import { Shop } from 'apps/shop.entity';
+import * as _ from 'lodash';
 
 let conn: Connection;
+const kebabCase = (value) =>{
+    return _.kebabCase(value)
+}
 beforeAll(async () => {
     conn = await Server.connectToDB();
 });
@@ -19,7 +23,7 @@ const $allShop = () => `
         }
     }
 `;
-const $addShop =( name: string , slug:string , address:string ) =>`
+const $addShop =( name: string , address:string , slug:string) =>`
     mutation {
         addShop(
             name: "${name}",
@@ -27,7 +31,11 @@ const $addShop =( name: string , slug:string , address:string ) =>`
             address: "${address}"
         ){
         ...on Exceptions{
-        __typename
+            __typename
+                exceptions{
+                code
+                message
+            }
         }
         ...on Shop{
             id
@@ -44,7 +52,39 @@ describe('addShops test', () => {
         const allShops = await Shop.findOne({ id:id })
         expect(allShops.name).toEqual(name);
     });
+    test('request with null name', async () => {
+        const client = new TestClient();
+        const { user, email, name } = await client.registerRandomUser();
+        await client.login({ userId: user.id, email });
+        const { addShop } = await client.query($addShop( '', name, name ));
+        const {__typename,exceptions} = addShop;
+        expect(__typename).toEqual('Exceptions');
+        expect(exceptions[0].message).toEqual('Name is required for the shop.');
+        
+    });
+    test('request with null address', async () => {
+        const client = new TestClient();
+        const { user, email, name } = await client.registerRandomUser();
+        await client.login({ userId: user.id, email });
+        const { addShop } = await client.query($addShop( name, '', name ));
+        const {__typename,exceptions} = addShop;
+        expect(__typename).toEqual('Exceptions');
+        expect(exceptions[0].message).toEqual('Shop needs an address.');
+        
+    });
+    test('slug not provided but created by name', async () => {
+        const client = new TestClient();
+        const { user, email, name } = await client.registerRandomUser();
+        await client.login({ userId: user.id, email });
+        const { addShop: {id} } = await client.query($addShop( name, name, '' ));
+        const allShops = await Shop.findOne({ id:id })
+        expect(allShops.slug).toEqual(kebabCase(name));
+        
+    });
 
+
+
+    //////
     test('Shop db addition', async () => {
         const client = new TestClient();
         const count = await Shop.count();
