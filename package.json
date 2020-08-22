@@ -12,6 +12,7 @@
       "db:development": "TS_NODE_TRANSPILE_ONLY=true NODE_PATH=src ts-node ./node_modules/typeorm/cli.js --config ormconfig.ts",
       "db:production": "NODE_PATH=src node ./node_modules/typeorm/cli.js --config ormconfig.js",
       "gen-schema-types": "NODE_PATH=src ts-node ./lib/generateGQLTypes.ts",
+      "add-categories": "NODE_PATH=src ts-node ./lib/addCategories.ts",
       "lint": "eslint '*/**/*.{js,ts,json}' --fix",
       "makemigrations": "yarn db:development migration:generate",
       "migrate": "yarn db migration:run",

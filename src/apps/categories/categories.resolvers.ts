@@ -3,7 +3,7 @@ import { Category } from 'apps/categories.entity';
 
 const Resolvers: ResolverMap = {
     Query: {
-        categories: async (_, { representation }:GQL.fetchCategories,): Promise<Category[] | null> => {
+        categories: async (_, { representation }:GQL.ICategoriesOnQueryArguments,): Promise<Category[] | null> => {
             return await Category.find();
         },
     },

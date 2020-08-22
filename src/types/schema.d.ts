@@ -32,16 +32,23 @@ declare namespace GQL {
      * Returns details of user which is logged in
      */
     me: IUser | null;
+    categories: Array<ICategory | null> | null;
 
     /**
      * Ping can be used to find is server alive or not
      */
     ping: string;
+    product: Array<IProduct | null> | null;
+    allShop: Array<IShop | null>;
 
     /**
      * Check if shop already exist
      */
     shopExist: boolean | null;
+  }
+
+  interface ICategoriesOnQueryArguments {
+    representation?: string | null;
   }
 
   interface IShopExistOnQueryArguments {
@@ -102,6 +109,29 @@ declare namespace GQL {
     verified: boolean | null;
   }
 
+  interface ICategory {
+    __typename: 'Category';
+    name: string | null;
+    code: string | null;
+    representation: string | null;
+    parent: ICategory | null;
+  }
+
+  interface IProduct {
+    __typename: 'Product';
+    name: string | null;
+    id: string | null;
+  }
+
+  interface IShop {
+    __typename: 'Shop';
+    name: string | null;
+    domain: string | null;
+    address: string | null;
+    slug: string | null;
+    id: string | null;
+  }
+
   interface IMutation {
     __typename: 'Mutation';
 
@@ -109,13 +139,26 @@ declare namespace GQL {
      * Login/Create account with google
      */
     loginWithGoogle: UserOrExceptions | null;
+    addCategory: ICategory | null;
+    addProduct: IProduct | null;
     addCustomDomain: ShopOrExceptions | null;
     addShop: ShopOrExceptions | null;
+    editShop: ShopOrExceptions | null;
   }
 
   interface ILoginWithGoogleOnMutationArguments {
     id: string;
     token: string;
+  }
+
+  interface IAddCategoryOnMutationArguments {
+    name: string;
+    code: string;
+    representation?: string | null;
+  }
+
+  interface IAddProductOnMutationArguments {
+    name: string;
   }
 
   interface IAddCustomDomainOnMutationArguments {
@@ -127,6 +170,12 @@ declare namespace GQL {
     name: string;
     slug?: string | null;
     address: string;
+  }
+
+  interface IEditShopOnMutationArguments {
+    name?: string | null;
+    slug?: string | null;
+    address?: string | null;
   }
 
   type UserOrExceptions = IUser | IExceptions;
@@ -147,13 +196,7 @@ declare namespace GQL {
 
   type ShopOrExceptions = IShop | IExceptions;
 
-  interface IShop {
-    __typename: 'Shop';
-    name: string | null;
-    domain: string | null;
-    address: string | null;
-    slug: string | null;
-  }
+  type CategoryOrException = ICategory | IException;
 
   interface IDone {
     __typename: 'Done';
